@@ -24,6 +24,8 @@
     blocoLocalizacao: document.getElementById("bloco-localizacao"),
     localizacao: document.getElementById("usar-localizacao"),
     localizacaoStatus: document.getElementById("localizacao-status"),
+    cadastro: document.getElementById("form-cadastro"),
+    cadastroStatus: document.getElementById("cadastro-status"),
   };
 
   // Requisição em andamento. Cancelada quando o usuário filtra de novo,
@@ -368,6 +370,36 @@
     );
   }
 
+
+  async function cadastrarPonto(evento) {
+    evento.preventDefault();
+    const form = new FormData(el.cadastro);
+    const dados = Object.fromEntries(form.entries());
+    dados.estado = dados.estado.trim().toUpperCase();
+    dados.materiais = dados.materiais.split(",").map((item) => item.trim().toLowerCase()).filter(Boolean);
+    const botao = el.cadastro.querySelector("button[type=submit]");
+    botao.disabled = true;
+    el.cadastroStatus.textContent = "Cadastrando ponto…";
+    try {
+      const resposta = await fetch(`${API_URL}/pontos`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify(dados),
+      });
+      const corpo = await resposta.json();
+      if (!resposta.ok || !corpo.success) {
+        throw new Error(corpo.message || "Confira os campos informados.");
+      }
+      el.cadastro.reset();
+      el.cadastroStatus.textContent = "Ponto cadastrado com sucesso.";
+      await iniciar();
+    } catch (erro) {
+      el.cadastroStatus.textContent = `Não foi possível cadastrar: ${erro.message}`;
+    } finally {
+      botao.disabled = false;
+    }
+  }
+
   // ---------- Eventos ----------
 
   // Se a 1ª carga falhou, refaz tudo; senão, apenas reaplica os filtros.
@@ -379,6 +411,7 @@
     }
   }
 
+  el.cadastro.addEventListener("submit", cadastrarPonto);
   el.formulario.addEventListener("submit", (evento) => {
     evento.preventDefault();
     atualizar();

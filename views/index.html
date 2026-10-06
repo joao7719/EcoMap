@@ -51,6 +51,18 @@
         </div>
     </form>
 
+    <section id="cadastro" aria-labelledby="titulo-cadastro" class="cadastro">
+        <h2 id="titulo-cadastro">Cadastrar ponto de reciclagem</h2>
+        <form id="form-cadastro" class="filtros" aria-describedby="cadastro-status">
+            <div class="campo"><label for="cadastro-nome">Nome *</label><input id="cadastro-nome" name="nome" required maxlength="120"></div>
+            <div class="campo"><label for="cadastro-endereco">Endereço *</label><input id="cadastro-endereco" name="endereco" required maxlength="160"></div>
+            <div class="campo"><label for="cadastro-cidade">Cidade *</label><input id="cadastro-cidade" name="cidade" required maxlength="80"></div>
+            <div class="campo"><label for="cadastro-estado">UF *</label><input id="cadastro-estado" name="estado" required minlength="2" maxlength="2" pattern="[A-Za-z]{2}" placeholder="SP"></div>
+            <div class="campo"><label for="cadastro-materiais">Materiais</label><input id="cadastro-materiais" name="materiais" placeholder="papel, vidro, plastico"></div>
+            <div class="acoes"><button type="submit" class="botao botao-primario">Cadastrar ponto</button></div>
+            <p id="cadastro-status" class="localizacao-status" aria-live="polite"></p>
+        </form>
+    </section>
     <section id="resultados" aria-labelledby="titulo-resultados">
         <div class="resultados-topo">
             <h2 id="titulo-resultados">Pontos de reciclagem</h2>
